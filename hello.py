@@ -3,4 +3,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    return 'Index Page'
+
+@app.route('/hello')
+def hello():
+    return 'Hello, World'
