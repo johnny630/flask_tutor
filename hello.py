@@ -1,9 +1,9 @@
-from flask import Flask
+from flask import Flask, url_for
 from markupsafe import escape
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
+def index():
     return 'Index Page'
 
 @app.route('/hello')
@@ -41,3 +41,14 @@ def projects():
 @app.route('/about')
 def about():
     return 'The about page'
+
+# URL binding
+# 1. Reversing is often more descriptive than hard-coding the URLs.
+# 2. You can change your URLs in one go instead of needing to remember to manually change hard-coded URLs.
+# 3. URL building handles escaping of special characters and Unicode data transparently.
+# 4. The generated paths are always absolute, avoiding unexpected behavior of relative paths in browsers.
+# 5. If your application is placed outside the URL root, for example, in /myapplication instead of /, url_for() properly handles that for you.
+with app.test_request_context():
+    print(url_for('index'))
+    print(url_for('hello', next='/'))
+    print(url_for('show_user_profile', username='Johnny Liu', param='test'))
