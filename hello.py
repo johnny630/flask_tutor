@@ -57,3 +57,8 @@ with app.test_request_context():
     print(url_for('index'))
     print(url_for('hello', next='/'))
     print(url_for('show_user_profile', username='Johnny Liu', param='test'))
+
+
+with app.test_request_context('/hello'):
+    assert request.path == '/hello'
+    assert request.method == 'GET'
