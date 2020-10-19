@@ -1,4 +1,5 @@
 from flask import Flask, url_for, request, render_template
+from werkzeug.utils import secure_filename
 from markupsafe import escape
 app = Flask(__name__)
 
@@ -60,6 +61,14 @@ def login():
             error = 'Invalid username/password'
 
     return f'Error: {error}'
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        f = request.files['the_file']
+        f.save(secure_filename(f.filename))
+
+    return 'ok'
 
 # URL binding
 # 1. Reversing is often more descriptive than hard-coding the URLs.
