@@ -1,4 +1,5 @@
-from flask import Flask, url_for, request, render_template, make_response
+from flask import Flask, url_for, request, render_template
+from flask import make_response, abort, redirect
 from werkzeug.utils import secure_filename
 from markupsafe import escape
 app = Flask(__name__)
@@ -73,6 +74,14 @@ def upload_file():
         f.save(secure_filename(f.filename))
 
     return 'ok'
+
+@app.route('/redirect')
+def to_redirect():
+    return redirect(url_for('http401'))
+
+@app.route('/http401')
+def http401():
+    abort(401)
 
 # URL binding
 # 1. Reversing is often more descriptive than hard-coding the URLs.
