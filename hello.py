@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request, render_template
+from flask import Flask, url_for, request, render_template, make_response
 from werkzeug.utils import secure_filename
 from markupsafe import escape
 app = Flask(__name__)
@@ -10,7 +10,11 @@ def index():
 @app.route('/hello/')
 @app.route('/hello/<name>')
 def hello(name=None):
-    return render_template('hello.html', name=name)
+    cookie_value = request.cookies.get('cookie_value', '')
+
+    resp = make_response(render_template('hello.html', name=name, cookie_value=cookie_value))
+    resp.set_cookie('cookie_value', name)
+    return resp
 
 # string (default) accepts any text without a slash
 @app.route('/user/<username>')
