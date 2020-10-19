@@ -47,6 +47,20 @@ def projects():
 def about():
     return 'The about page'
 
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if username == 'johnny' and password == '1234':
+            return f'Welcome {username}'
+        else:
+            error = 'Invalid username/password'
+
+    return f'Error: {error}'
+
 # URL binding
 # 1. Reversing is often more descriptive than hard-coding the URLs.
 # 2. You can change your URLs in one go instead of needing to remember to manually change hard-coded URLs.
