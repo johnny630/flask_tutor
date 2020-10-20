@@ -83,6 +83,14 @@ def to_redirect():
 def http401():
     abort(401)
 
+@app.route("/info")
+def info_api():
+    return {
+        "username": 'johnny',
+        "theme": 'test',
+        "image": 'https://test.com/test.jpg',
+    }
+
 # URL binding
 # 1. Reversing is often more descriptive than hard-coding the URLs.
 # 2. You can change your URLs in one go instead of needing to remember to manually change hard-coded URLs.
