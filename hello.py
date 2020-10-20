@@ -1,12 +1,17 @@
+import os
 from flask import Flask, url_for, request, render_template
-from flask import make_response, abort, redirect
+from flask import make_response, abort, redirect, session
 from werkzeug.utils import secure_filename
 from markupsafe import escape
 app = Flask(__name__)
 
+app.secret_key = os.urandom(16)
+
 @app.route('/')
 def index():
-    return 'Index Page'
+    if 'username' in session:
+        return 'Logged in as %s' % escape(session['username'])
+    return 'You are not logged in'
 
 @app.route('/hello/')
 @app.route('/hello/<name>')
@@ -90,6 +95,25 @@ def info_api():
         "theme": 'test',
         "image": 'https://test.com/test.jpg',
     }
+
+@app.route('/user_login', methods=['GET', 'POST'])
+def user_login():
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        return redirect(url_for('index'))
+
+    return '''
+        <form method="post">
+            <p><input type=text name=username>
+            <p><input type=submit value=Login>
+        </form>
+    '''
+@app.route('/user_logout')
+def user_logout():
+    # remove the username from the session if it's there
+    session.pop('username', None)
+    return redirect(url_for('index'))
+
 
 # URL binding
 # 1. Reversing is often more descriptive than hard-coding the URLs.
